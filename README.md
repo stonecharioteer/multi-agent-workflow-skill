@@ -150,6 +150,39 @@ trigger = "ui-related-work"
 | `opencode`    | OpenCode-hosted models                | Model name is runner-local            |
 | `claude-code` | Claude Code-hosted models             | Useful for Fable UI review            |
 
+## Pi Input HUD
+
+Yes: when Pi roles run through `agent_team`, the installed `pi-multiagent`
+extension already renders a live widget near the editor/input area. It shows the
+run objective, progress bar, complete/working/queued counts, active step, queued
+steps, and attention states.
+
+| Role runner   | HUD source                               | Coverage                                         |
+| ------------- | ---------------------------------------- | ------------------------------------------------ |
+| `pi`          | `pi-multiagent` `agent_team` live widget | reviewer/implementer stages delegated through Pi |
+| `opencode`    | parent-reported unless extended          | Kimi/other external runs                         |
+| `claude-code` | parent-reported unless extended          | Fable/UI review runs                             |
+
+For a unified elapsed-time/stage HUD across all runners, add a companion Pi
+extension that writes `ctx.ui.setWidget(...)` from a workflow state file. The
+default skill should use `pi-multiagent` directly for Pi child runs instead of
+recreating its live board.
+
+## Swarm Mode HUD
+
+For a list of Linear/Jira/GitHub tickets, the workflow can run one isolated loop
+per ticket and open separate PRs to the configured default branch.
+
+| Swarm unit | Default                             | Why                          |
+| ---------- | ----------------------------------- | ---------------------------- |
+| Worktree   | one per ticket                      | isolates agent changes       |
+| Branch     | one per ticket key                  | keeps tracker links clear    |
+| PR         | one per ticket                      | easier review/merge/rollback |
+| Target     | repo default branch/configured base | matches project flow         |
+
+Multi-ticket PRs are opt-in. If enabled, the PR body must list all tickets and
+separate closing tickets from related references.
+
 ## Ticket Link HUD
 
 When Linear/Jira/GitHub Issues are configured or a task includes ticket keys,

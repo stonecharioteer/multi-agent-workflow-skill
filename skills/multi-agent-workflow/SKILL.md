@@ -164,6 +164,87 @@ Validation:
 Head: `<sha>`
 ```
 
+## Pi HUD / Live Status
+
+When Pi-run roles are delegated through `agent_team`, use `pi-multiagent`
+directly rather than rebuilding its live-run UI. The package already provides a
+near-input live widget via Pi's widget API. In interactive Pi sessions it shows:
+
+- active run objective;
+- progress meter and complete/working/queued counts;
+- currently running step/role;
+- queued next steps;
+- failed/blocked/timed-out attention states;
+- terminal notices and artifact pointers in the transcript.
+
+This widget is installed by the `pi-multiagent` extension and appears while
+`agent_team` runs are live. Prefer this for reviewer/implementer stages whose
+`runner = "pi"`.
+
+Limitations:
+
+- The built-in `pi-multiagent` widget tracks `agent_team` runs, not arbitrary
+  external OpenCode or Claude Code processes.
+- For `runner = "opencode"` or `runner = "claude-code"`, report status through
+  the parent workflow unless a companion extension is added.
+- The built-in widget shows progress/stage/activity; exact elapsed time/ETA may
+  require a companion workflow HUD extension.
+
+If a project needs one unified HUD across Pi, OpenCode, and Claude Code roles,
+add a small companion Pi extension that uses `ctx.ui.setWidget(...)` or
+`ctx.ui.setStatus(...)` and updates from the workflow state file. Do not duplicate
+`pi-multiagent`'s child-run board unless a project needs different visuals.
+
+## Swarm Mode: Ticket Lists To Separate PRs
+
+When the user provides a list of Linear, Jira, GitHub, or other issue-tracker
+tickets, run the same reviewer → implementer → validation loop per ticket. By
+default, file **separate PRs to the configured default branch**: one ticket, one
+worktree, one branch, one PR.
+
+Default swarm behavior:
+
+1. Parse ticket IDs, titles, links, and acceptance criteria.
+2. Determine the target branch from repo config (`repo.default_base_branch`) or
+   the hosting provider's default branch.
+3. Create an isolated worktree per ticket unless project directives say
+   otherwise.
+4. Create a branch containing the ticket key, for example
+   `feat/ABC-123-short-title`.
+5. Run the configured multi-agent loop independently for that ticket.
+6. Validate and open a draft PR to the target branch.
+7. Put the ticket key and close/reference keywords in the PR body according to
+   completion status.
+8. Record cross-ticket dependencies with `Refs`, not `Closes`, unless the PR
+   actually completes those tickets.
+
+Swarm safety rules:
+
+- Prefer separate PRs. Only combine tickets when the config or user explicitly
+  allows a multi-ticket PR.
+- Stop and ask if two tickets require conflicting changes to the same files or
+  one ticket depends on an unmerged PR from another ticket.
+- Never force-push or rewrite another ticket branch.
+- Keep validation and PR comments ticket-scoped.
+- If a shared blocker affects all tickets, stop the swarm and report the shared
+  blocker instead of producing many broken PRs.
+
+Suggested PR body section for each swarm PR:
+
+```md
+## Ticket
+
+Closes ABC-123
+
+## Validation
+
+- <command> — <result>
+
+## Related
+
+Refs ABC-124
+```
+
 ## Issue Tracker Alignment
 
 If Linear, Jira, GitHub Issues, or another tracker is configured or detectable,

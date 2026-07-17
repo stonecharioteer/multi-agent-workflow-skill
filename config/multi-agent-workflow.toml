@@ -54,3 +54,33 @@ require_ticket_links_in_pr_body = true
 multiple_ticket_link_strategy = "primary-closes-secondary-refs"
 default_close_keywords = ["Closes", "Fixes"]
 default_reference_keyword = "Refs"
+
+[hud]
+enabled = true
+use_pi_multiagent_live_widget = true
+placement = "above-editor"
+show_elapsed = true
+show_stage = true
+show_active_role = true
+show_queue = true
+show_attention = true
+external_runner_status = "parent-reported"
+
+[swarm]
+enabled = true
+default_mode = "one-ticket-one-pr"
+target_branch = "default"
+worktree_per_ticket = true
+branch_include_ticket_key = true
+max_parallel_tickets = 3
+max_iterations_per_ticket = 3
+open_prs_as_draft = true
+allow_multi_ticket_pr = false
+require_ticket_links_in_each_pr = true
+stop_on_shared_blocker = true
+
+[swarm.pr_body]
+include_ticket_key = true
+include_acceptance_summary = true
+include_validation = true
+include_cross_ticket_refs = true
