@@ -83,9 +83,9 @@ preserve_user_changes = true
 
 ### Runner semantics
 
-- `runner = "pi"`: invoke through Pi, for example Pi `agent_team` or the active Pi harness. This is the runner for Codex/Sol and Grok in Merrilin.
-- `runner = "opencode"`: invoke through OpenCode. This is the runner for Kimi in Merrilin.
-- `runner = "claude-code"`: invoke through Claude Code. In Merrilin, use this for Fable UI review when work touches UI/UX surfaces.
+- `runner = "pi"`: invoke through Pi, for example Pi `agent_team` or the active Pi harness. Use this runner for Pi-hosted models such as Codex/Sol and Grok when configured.
+- `runner = "opencode"`: invoke through OpenCode. Use this runner for OpenCode-hosted models such as Kimi when configured.
+- `runner = "claude-code"`: invoke through Claude Code. Use this for Claude Code-hosted UI review models such as Fable when configured.
 - `model` is runner-local/provider-qualified as needed by that runner. Do not add an `opencode/` prefix to a Kimi model unless the OpenCode command actually expects it.
 
 ### Role semantics
@@ -175,19 +175,19 @@ Head: `<sha>`
 - Add/update focused tests for changed behavior when practical.
 - New tests need a concise docstring/comment explaining the protected product
   behavior or invariant.
-- For reader-critical flows, preserve the invariant that local reading, page
-  turns, progress saving, local files, and offline resume do not depend on
-  optional cloud/analytics/AI/telemetry/backend writes.
+- Preserve project-specific critical-path invariants from the repo configuration
+  or user instructions. Optional integrations should fail open unless the
+  project explicitly says otherwise.
 
 ## Suggested Local Artifacts
 
 Keep prompts/logs outside the PR diff unless the user asks to commit them:
 
 ```text
-/home/stonecharioteer/code/checkouts/work/merrilin-ai/merrilin-agents/prompts/<workflow>-reviewer-<id>-iter-<N>.md
-/home/stonecharioteer/code/checkouts/work/merrilin-ai/merrilin-agents/prompts/<workflow>-implementer-<id>-iter-<N>.md
-/home/stonecharioteer/code/checkouts/work/merrilin-ai/merrilin-agents/logs/<workflow>-reviewer-<id>-iter-<N>.log
-/home/stonecharioteer/code/checkouts/work/merrilin-ai/merrilin-agents/logs/<workflow>-implementer-<id>-iter-<N>.log
+<agent-workspace>/prompts/<workflow>-reviewer-<id>-iter-<N>.md
+<agent-workspace>/prompts/<workflow>-implementer-<id>-iter-<N>.md
+<agent-workspace>/logs/<workflow>-reviewer-<id>-iter-<N>.log
+<agent-workspace>/logs/<workflow>-implementer-<id>-iter-<N>.log
 ```
 
 ## Implementation Notes For Pi `agent_team`
