@@ -1,0 +1,46 @@
+# Multi-agent workflow defaults.
+# Repo overrides may live at either:
+#   .agents/multi-agent-workflow.toml
+#   .multi-agent-workflow.toml
+# Override only the keys you need.
+
+[agents.reviewer]
+runner = "pi"
+model = "openai-codex/gpt-5.6-sol"
+thinking = "high"
+role = "reviewer"
+
+[agents.implementer]
+runner = "pi"
+model = "xai-auth/grok-4.5"
+thinking = "medium"
+role = "implementer"
+
+[agents.communicator]
+runner = "opencode"
+model = "kimi-2.6"
+thinking = "medium"
+role = "committer-pr-communicator"
+optional = true
+
+[agents.ui_reviewer]
+runner = "claude-code"
+model = "claude.fable.high"
+thinking = "high"
+role = "ui-reviewer"
+optional = true
+trigger = "ui-related-work"
+
+[workflow]
+max_iterations = 3
+push_by_default = false
+comment_by_default = false
+allow_committer_agent = true
+require_human_before_merge = true
+review_until = "approve-or-accepted-nits"
+
+[policy]
+never_force_push = true
+never_address_local_review_bots_on_pr = true
+comment_only_actual_results = true
+preserve_user_changes = true
