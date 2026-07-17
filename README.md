@@ -11,13 +11,13 @@
 
 ## Mission HUD
 
-| Channel | Signal | Contract |
-| --- | --- | --- |
-| 🎯 Objective | Feature, fix, or PR review loop | Work from current code and repo config |
-| 🧠 Reviewer | Local verdict, no mutation | Findings are evidence, not GitHub bot commands |
-| 🛠 Implementer | Minimal safe changes or no-change defense | Parent verifies every diff |
-| 🛰 Communicator | Optional commit/PR text | Reports only real changes and validation |
-| 🎨 UI reviewer | Optional UI/UX pass | Trigger only for frontend/user-facing work |
+| Channel        | Signal                                    | Contract                                       |
+| -------------- | ----------------------------------------- | ---------------------------------------------- |
+| 🎯 Objective   | Feature, fix, or PR review loop           | Work from current code and repo config         |
+| 🧠 Reviewer    | Local verdict, no mutation                | Findings are evidence, not GitHub bot commands |
+| 🛠 Implementer  | Minimal safe changes or no-change defense | Parent verifies every diff                     |
+| 🛰 Communicator | Optional commit/PR text                   | Reports only real changes and validation       |
+| 🎨 UI reviewer | Optional UI/UX pass                       | Trigger only for frontend/user-facing work     |
 
 ```text
 TASK / PR
@@ -96,12 +96,12 @@ ln -sfn "$repo_dir/config/multi-agent-workflow.toml" "${HOME}/.pi/agent/config/m
 
 Config is merged in this order; later entries override earlier ones:
 
-| Priority | Location | Scope |
-| ---: | --- | --- |
-| 1 | `~/.pi/agent/config/multi-agent-workflow.toml` | global defaults |
-| 2 | `.agents/multi-agent-workflow.toml` | repo override |
-| 3 | `.multi-agent-workflow.toml` | alternate repo override |
-| 4 | current user instruction | task override |
+| Priority | Location                                       | Scope                   |
+| -------: | ---------------------------------------------- | ----------------------- |
+|        1 | `~/.pi/agent/config/multi-agent-workflow.toml` | global defaults         |
+|        2 | `.agents/multi-agent-workflow.toml`            | repo override           |
+|        3 | `.multi-agent-workflow.toml`                   | alternate repo override |
+|        4 | current user instruction                       | task override           |
 
 Copy a project override template:
 
@@ -144,11 +144,11 @@ trigger = "ui-related-work"
 
 ### Runner map
 
-| Runner | Use for | Notes |
-| --- | --- | --- |
-| `pi` | Pi / `agent_team` / active Pi harness | Provider-qualified models when needed |
-| `opencode` | OpenCode-hosted models | Model name is runner-local |
-| `claude-code` | Claude Code-hosted models | Useful for Fable UI review |
+| Runner        | Use for                               | Notes                                 |
+| ------------- | ------------------------------------- | ------------------------------------- |
+| `pi`          | Pi / `agent_team` / active Pi harness | Provider-qualified models when needed |
+| `opencode`    | OpenCode-hosted models                | Model name is runner-local            |
+| `claude-code` | Claude Code-hosted models             | Useful for Fable UI review            |
 
 ## Worktree Default
 
@@ -180,6 +180,30 @@ clarify behavior → reviewer risk pass → implementer patch → parent validat
 confirm PR branch → reviewer local pass → classify findings → implementer fixes
 or defends → parent validation → optional push/comment → repeat until satisfied
 ```
+
+## Developer HUD
+
+This repo includes pre-commit hooks for small-repo hygiene:
+
+| Hook                                   | Purpose                            |
+| -------------------------------------- | ---------------------------------- |
+| Prettier Markdown                      | formats `README.md` and skill docs |
+| `check-toml` / `check-yaml`            | validates config syntax            |
+| merge-conflict / symlink / case checks | catches common repo hazards        |
+| EOF / trailing whitespace / LF endings | keeps text files clean             |
+| private-key scan                       | blocks accidental key commits      |
+
+Install and run:
+
+```bash
+uvx pre-commit install --install-hooks
+uvx pre-commit run --all-files
+```
+
+Prettier is invoked with `npx --yes prettier --write`, so Node/npm must be
+available for Markdown formatting. TOML is currently validated, not reformatted;
+add a TOML formatter only if the config surface grows enough to justify another
+dependency.
 
 ## Updating An Existing Install
 
