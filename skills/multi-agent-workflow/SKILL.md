@@ -163,10 +163,50 @@ Loop:
 4. Run configured implementer for each blocker, asking for minimal fix or
    evidence-backed no-change defense.
 5. Parent verifies every diff and runs validation.
-6. Commit/push only if user requested push/fix mode and validation passed.
-7. Comment only actual results if user requested PR communication.
-8. Repeat until reviewer returns approval/accepted nits, max iterations, or a
-   user decision is required.
+6. After conflict resolution, risky edits, or any post-review code change, run a
+   **fresh semantic reviewer pass** against the current head, not merely a
+   prior-finding recheck. The reviewer prompt must include product invariants and
+   likely failure modes for the touched domain.
+7. Commit/push only if user requested push/fix mode and validation passed.
+8. Comment only actual results if user requested PR communication.
+9. Repeat until the fresh local reviewer returns approval/accepted nits, max
+   iterations, or a user decision is required.
+
+### Semantic Review And Invariant Checklist
+
+A final local review must be semantic, not only mechanical. Do not rely solely on
+AST equality, moved-code parity, or previous-blocker rechecks. For refactors,
+merge-conflict resolutions, backend reliability changes, and reader-critical
+paths, explicitly ask the reviewer to look for preserved bugs, newly exposed
+failure modes, and transaction/recovery edge cases.
+
+For backend or sync-related changes, include this checklist in the reviewer task
+and parent audit when applicable:
+
+- raw events, acknowledgements, and accepted IDs are recorded only after the
+  required durable work for that item succeeds;
+- per-item work that can fail independently is inside a visible savepoint or
+  named recovery helper;
+- optional sync/event emission failures reject or defer only the affected item
+  and do not roll back earlier accepted items;
+- caught SQLAlchemy/database failures do not continue on a poisoned session
+  without savepoint/rollback containment;
+- duplicate/idempotent replay behavior stays stable;
+- focused failure-injection tests cover representative side-effect failures when
+  practical.
+
+If the workflow only rechecked previous comments, label that output as a
+`prior-finding recheck` and do not treat it as readiness approval.
+
+### External Review Bots
+
+External review bots such as CodeRabbit may provide useful additional evidence,
+but this skill must not treat any one external bot as the final readiness signal.
+Projects may deprecate, disable, or replace these services. When available,
+classify their comments like any other evidence: verify against current code, fix
+still-valid actionable findings, or document why they are stale/invalid. The
+required final gate is the configured local semantic review plus parent-verified
+validation and any project-required checks.
 
 ## PR Comment Policy
 
@@ -386,7 +426,7 @@ Run focused tests/lints appropriate to touched code.
 Report concisely:
 
 - config used: reviewer/implementer/communicator/UI-reviewer runners and models;
-- iterations run and final reviewer verdict;
+- iterations run and final fresh semantic reviewer verdict;
 - changes made/pushed, if any;
 - validation results;
 - PR comment URL, if any;
