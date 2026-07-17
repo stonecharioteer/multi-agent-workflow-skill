@@ -31,6 +31,15 @@ role = "ui-reviewer"
 optional = true
 trigger = "ui-related-work"
 
+[execution]
+default_nontrivial_runner = "agent_team"
+prefer_background_agents = true
+use_agent_team_for_review_loops = true
+use_agent_team_for_swarm = true
+foreground_only_for_trivial_tasks = true
+foreground_task_max_minutes = 5
+require_user_opt_in_for_foreground_multi_agent = true
+
 [workflow]
 max_iterations = 3
 push_by_default = false
