@@ -166,6 +166,20 @@ Validation:
 Head: `<sha>`
 ```
 
+## Worktree Guidance
+
+Prefer a dedicated Git worktree per task/PR unless the project directives say
+otherwise. Use project-specified worktree roots, branch naming, and environment
+setup when provided. Worktrees are encouraged because they isolate agent changes
+from other branches and make parallel review/fix loops safer.
+
+Before creating a worktree:
+
+- read project instructions for checkout location and branch conventions;
+- check for existing worktrees/branches;
+- avoid overwriting or deleting user work;
+- never remove a worktree without explicit user approval.
+
 ## Safety Requirements
 
 - Preserve user changes. Never reset, checkout over, or discard unrelated work.
