@@ -150,6 +150,22 @@ trigger = "ui-related-work"
 | `opencode`    | OpenCode-hosted models                | Model name is runner-local            |
 | `claude-code` | Claude Code-hosted models             | Useful for Fable UI review            |
 
+## Ticket Link HUD
+
+When Linear/Jira/GitHub Issues are configured or a task includes ticket keys,
+align branches and PR descriptions with those tickets.
+
+| Surface                | Convention                 | Example                          |
+| ---------------------- | -------------------------- | -------------------------------- |
+| Branch                 | include primary ticket key | `feat/ABC-123-short-title`       |
+| Completed ticket       | closing keyword            | `Closes ABC-123`                 |
+| Related/partial ticket | reference keyword          | `Refs ABC-124`                   |
+| Multi-ticket PR        | explicit ticket section    | `Closes ABC-123`; `Refs ABC-124` |
+
+Do not use closing keywords unless the PR fully satisfies that ticket's
+acceptance criteria. For multi-ticket work, put every ticket in the PR body and
+separate closing tickets from related references.
+
 ## Worktree Default
 
 Prefer a dedicated Git worktree per task/PR unless the project directives say

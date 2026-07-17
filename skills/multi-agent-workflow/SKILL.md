@@ -164,6 +164,46 @@ Validation:
 Head: `<sha>`
 ```
 
+## Issue Tracker Alignment
+
+If Linear, Jira, GitHub Issues, or another tracker is configured or detectable,
+align branch names and PR descriptions with the ticket metadata.
+
+Detection examples:
+
+- explicit config under `[integrations.issue_tracker]`;
+- branch/user task includes a ticket key such as `ABC-123` or `MER-307`;
+- repo docs mention Linear/Jira conventions;
+- local helper scripts or CLIs are present.
+
+Branch guidance:
+
+- Include the primary ticket key in the branch name unless project directives say
+  otherwise.
+- Prefer stable, readable branches such as `feat/ABC-123-short-title`,
+  `fix/ABC-123-short-title`, or the repo's documented equivalent.
+- If one PR covers multiple tickets, use the primary ticket in the branch and
+  link all affected tickets in the PR body.
+
+PR body guidance:
+
+- Use closing keywords only for tickets fully completed by the PR, for example
+  `Closes ABC-123` or `Fixes ABC-123`.
+- Use reference keywords for related or partially addressed tickets, for example
+  `Refs ABC-124`.
+- For multiple tickets, list them explicitly in a `Tickets` or `Related issues`
+  section and distinguish primary/closing tickets from related references.
+- Do not claim a ticket is closed unless the acceptance criteria are satisfied.
+
+Example:
+
+```md
+## Tickets
+
+Closes ABC-123
+Refs ABC-124, ABC-125
+```
+
 ## Worktree Guidance
 
 Prefer a dedicated Git worktree per task/PR unless the project directives say

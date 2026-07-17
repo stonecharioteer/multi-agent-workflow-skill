@@ -64,3 +64,13 @@ format_before_tests = true
 version_check_base = "origin/development"
 required_diff_check = true
 precommit_on_changed_files = true
+
+[integrations.issue_tracker]
+detect = true
+providers = ["linear", "jira", "github"]
+branch_include_ticket_key = true
+branch_ticket_key_position = "prefix"
+require_ticket_links_in_pr_body = true
+multiple_ticket_link_strategy = "primary-closes-secondary-refs"
+default_close_keywords = ["Closes", "Fixes"]
+default_reference_keyword = "Refs"

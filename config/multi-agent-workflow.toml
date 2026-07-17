@@ -44,3 +44,13 @@ never_force_push = true
 never_address_local_review_bots_on_pr = true
 comment_only_actual_results = true
 preserve_user_changes = true
+
+[integrations.issue_tracker]
+detect = true
+providers = ["linear", "jira", "github"]
+branch_include_ticket_key = true
+branch_ticket_key_position = "prefix"
+require_ticket_links_in_pr_body = true
+multiple_ticket_link_strategy = "primary-closes-secondary-refs"
+default_close_keywords = ["Closes", "Fixes"]
+default_reference_keyword = "Refs"
