@@ -1,4 +1,4 @@
-# Example repo override for Merrilin-style workflows.
+# Example repo override for a project workflow.
 # Copy to .agents/multi-agent-workflow.toml in the target repo and customize.
 
 [agents.reviewer]
