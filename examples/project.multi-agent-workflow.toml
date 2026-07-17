@@ -44,6 +44,10 @@ comment_by_default = false
 allow_committer_agent = true
 require_human_before_merge = true
 review_until = "approve-or-accepted-nits"
+require_fresh_semantic_review_before_ready = true
+require_invariant_checklist_for_risky_changes = true
+external_bot_reviews_are_optional = true
+external_bot_reviews_are_final_gate = false
 
 [policy]
 never_force_push = true

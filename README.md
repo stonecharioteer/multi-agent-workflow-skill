@@ -227,8 +227,16 @@ clarify behavior → reviewer risk pass → implementer patch → parent validat
 
 ```text
 confirm PR branch → reviewer local pass → classify findings → implementer fixes
-or defends → parent validation → optional push/comment → repeat until satisfied
+or defends → parent validation → fresh semantic reviewer pass → optional
+push/comment → repeat until satisfied
 ```
+
+After conflict resolution or risky backend/frontend edits, the final local review
+must be semantic, not just a previous-comment recheck. Include product/domain
+invariants such as transaction boundaries, savepoints, sync emission,
+acknowledgement timing, idempotent replay, accessibility, or reader-critical
+continuity as applicable. External review bots are useful evidence when
+available, but they are optional and are not the final readiness gate.
 
 ## Developer HUD
 
